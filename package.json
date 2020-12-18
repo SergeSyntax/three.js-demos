@@ -1,0 +1,23 @@
+{
+  "name": "threejs-demos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergwayKhodyachikh/ThreeJS-demos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergwayKhodyachikh/ThreeJS-demos/issues"
+  },
+  "homepage": "https://github.com/SergwayKhodyachikh/ThreeJS-demos#readme",
+  "dependencies": {
+    "@types/three": "^0.103.2",
+    "three": "^0.123.0"
+  }
+}

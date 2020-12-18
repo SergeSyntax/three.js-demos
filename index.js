@@ -1,60 +1,64 @@
-let scene, camera, renderer, cube, sphere;
-let ADD = 0.01;
+let scene, camera, renderer, shape;
+let ADD = 0.8;
 
-const createSphere = () => {
-  // arguments: radius length / number of horizontal and vertical segments / Phi start angle and finish angle  / Theta start angle and finish angle
-  let geometry = new THREE.SphereGeometry(5, 30, 30, 0, Math.PI, 0, Math.PI / 2);
-  // Math.PI = 180%
-  let material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+let createGeometry = function () {
+  let geometry = new THREE.Geometry();
 
-  sphere = new THREE.Mesh(geometry, material);
-  scene.add(sphere);
-};
+  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(5, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(2, 4, 3));
+  geometry.vertices.push(new THREE.Vector3(2, 4, -3));
 
-const createCube = () => {
-  let geometry = new THREE.BoxGeometry(1, 1, 1);
-  let material = new THREE.MeshBasicMaterial({ color: 0x00a1cb });
-  cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+  geometry.faces.push(new THREE.Face3(0, 1, 2));
+  geometry.faces.push(new THREE.Face3(0, 1, 3));
+  // geometry.faces.push(new THREE.Face3(0, 2, 3));
+
+  let material = new THREE.MeshBasicMaterial({ color: 0xff4606, side: THREE.DoubleSide });
+  shape = new THREE.Mesh(geometry, material);
+
+shape.rotation.z = 0.7;
+shape.rotation.x = 0.6;
+
+
+  scene.add(shape);
 };
 
 // set up the environment -
-// initialize scene, camera, objects and renderer
-const init = function () {
-  // 1. create the scene
+// initiallize scene, camera, objects and renderer
+let init = function () {
+  // create the scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
+  scene.background = new THREE.Color(0xffffff);
 
-  // 2. create an locate the camera
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+  // create an locate the camera
+  camera = new THREE.PerspectiveCamera(75, 
+    window.innerWidth / window.innerHeight, 
+    1, 1000);
+    camera.position.z = 40;
 
-  camera.position.z = 20;
-  // help tools
-  // let axes = new THREE.AxesHelper(5);
-  // scene.add(axes);
+  createGeometry();
 
-  // 3. create and locate the objects on the scene
-  // createCube();
-  createSphere();
-
-  // 4. create the renderer
+  // create the renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   document.body.appendChild(renderer.domElement);
 };
 
-// main animation loop = calls every 50-60 ms.
-
+// main animation loop - calls 50-60 times per second.
 let mainLoop = function () {
-  // sphere.position.x += ADD;
-  // scene.rotation.x +=ADD;
-  sphere.rotation.y += ADD;
+  shape.geometry.vertices[2].y += ADD;
+  shape.geometry.vertices[3].y += ADD;
+  shape.geometry.verticesNeedUpdate = true;
 
-  // if (cube.position.x < -3 || cube.position.x >= 3) ADD *= -1;
+  if(shape.geometry.vertices[2].y < -4 ||
+    shape.geometry.vertices[2].y > 4)
+     ADD *= -1;
+
   renderer.render(scene, camera);
   requestAnimationFrame(mainLoop);
 };
+
 ///////////////////////////////////////////////
 init();
 mainLoop();
