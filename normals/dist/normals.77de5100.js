@@ -36968,23 +36968,32 @@ var FaceNormalsHelper_js_1 = require("three/examples/jsm/helpers/FaceNormalsHelp
   var scene = new three_1.Scene();
   scene.background = new three_1.Color(0xffffff);
   var camera = new three_1.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.z = 20;
-  var geometry = new three_1.BoxGeometry(5, 5, 5);
-  var material = new three_1.MeshBasicMaterial({
-    color: 0xbbbbbb,
-    wireframe: true
-  });
-  var cube = new three_1.Mesh(geometry, material);
-  var normals = new FaceNormalsHelper_js_1.FaceNormalsHelper(cube, 5);
-  scene.add(cube);
+  camera.position.z = 20; // const geometry = new BoxGeometry(5, 5, 5);
+  // const geometry = new SphereGeometry(5, 30, 30);
+
+  var geometry = new three_1.TorusGeometry(5, 2, 10, 12); // const material = new MeshBasicMaterial({ color: 0xbbbbbb, wireframe: true });
+
+  var material = new three_1.MeshNormalMaterial(); // const cube = new Mesh(geometry, material);
+  // const sphere = new Mesh(geometry, material);
+
+  var torus = new three_1.Mesh(geometry, material); // const normals = new FaceNormalsHelper(cube, 5);
+  // const normals = new FaceNormalsHelper(sphere, 5);
+
+  var normals = new FaceNormalsHelper_js_1.FaceNormalsHelper(torus, 5); // scene.add(sphere);
+
+  scene.add(torus); // scene.add(cube);
+
   scene.add(normals);
   var renderer = new three_1.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   (function mainLoop() {
-    renderer.render(scene, camera);
-    cube.rotation.x += 0.05;
+    renderer.render(scene, camera); // cube.rotation.x += 0.001;
+    // cube.rotation.y += 0.001;
+
+    torus.rotation.x += 0.01;
+    torus.rotation.y += 0.01;
     normals.update();
     requestAnimationFrame(mainLoop);
   })();
@@ -37017,7 +37026,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38957" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44581" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
